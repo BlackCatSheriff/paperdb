@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 
 /// <summary>
@@ -516,8 +517,33 @@ public class ArticleHelper
             List<Article> arls = new List<Article>();
             using (var db = new PaperDbEntities())
             {
-                List<int> arIds = db.TypeConnection.Where(a => opIds.Contains(a.OptionId)).Select(a => a.ArticleId).Distinct().ToList();
+
+                /***
+                 * 
+                 * 这个是是要包含就能查出来，不太好
+                 * */
+                /*
+                 * List<int> arIds = db.TypeConnection.Where(a => opIds.Contains(a.OptionId)).Select(a => a.ArticleId).Distinct().ToList();
                 arls = db.Article.Where(a => arIds.Contains(a.id)).ToList();
+                */
+
+                //查询每一个 optionID 可以获得一个 set
+                //求所有 set 的广义交，结果就是多选项查询
+                //set 访问速度O(1),但是求交的时候也需要遍历，速度取决于 optionId 的个数
+                //目前没想到什么好的办法改进，可能程序可以优化，也可能数据库结构不好，导致现在这种查询尴尬的境地
+                int opid0 = opIds[0];
+                int opidNow = 0;
+                HashSet<int> setId = new HashSet<int>(db.TypeConnection.Where(a=>a.OptionId==opid0).Select(a=>a.ArticleId));// new HashSet<int>();
+                HashSet<int> setTmp = null;
+                for (int i = 1; i < opIds.Count; i++)
+                {
+                    //linq 不可以直接使用数组下标访问，需要用变量存一下
+                    opidNow = opIds[i];
+                    setTmp = new HashSet<int>(db.TypeConnection.Where(a => a.OptionId == opidNow).Select(a => a.ArticleId));
+                    setId.IntersectWith(setTmp);
+                }
+
+                arls = db.Article.Where(a => setId.Contains(a.id)).ToList();
             }
             return arls;
         }
