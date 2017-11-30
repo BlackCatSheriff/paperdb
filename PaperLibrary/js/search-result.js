@@ -41,14 +41,14 @@ $(function(){
 		{
 			var selectedLi=$(document.getElementById(idArray[i]));
 			//获取应该选中的li
-			if(selectedLi.parent("ul").hasClass("second-title"))
+			if(selectedLi.parents("ul").hasClass("second-title"))
 			//如果是二级菜单下的li
 			{
 				//以下是修改第一级菜单
 				var firstLevel=selectedLi.parents(".select-level2").find(".first-title");
-				var optionIndex=selectedLi.parents(".select-level2").find(".second-title").index(selectedLi.parent("ul"));
-				firstLevel.find(".select-title p").text(firstLevel.find(".select-option:eq("+optionIndex+")").text());
-				selectedLi.parent("ul").css({"display":"block"});
+				var optionIndex=selectedLi.parents(".select-level2").find(".second-title").index(selectedLi.parents("ul"));
+				firstLevel.find(".select-title p").text(firstLevel.find(".select-option:eq("+(optionIndex+1)+")").text());
+				selectedLi.parents(".second-title").css({"display":"block"});
 				//以下是修改第二级菜单
 				for(var j=0;j<selectUls.length;j++)
 				{
@@ -60,13 +60,13 @@ $(function(){
 				//交换文本改变下拉框
 				if(!selectedLi.hasClass("select-title")){
 					changeLi=selectedLi.text();
-					selectedLi.text(selectedLi.parent("ul").find(".select-title p").text());
-					selectedLi.parent("ul").find(".select-title p").text(changeLi);
+					selectedLi.text(selectedLi.parents(".second-title").find(".select-title p").text());
+					selectedLi.parents(".second-title").find(".select-title p").text(changeLi);
 				}
 				//交换id
 				changeId=selectedLi.attr("id");
-				selectedLi.attr("id",selectedLi.parent("ul").find(".select-title").attr("id"));
-				selectedLi.parent("ul").find(".select-title").attr("id",changeId);
+				selectedLi.attr("id",selectedLi.parents(".second-title").find(".select-title").attr("id"));
+				selectedLi.parents(".second-title").find(".select-title").attr("id",changeId);
 			}else{
 				for(var j=0;j<selectUls.length;j++)
 				{
@@ -74,7 +74,7 @@ $(function(){
 						selectUls[j].setSelected(idArray[i]);
 				}
 				//修改selectedUls数组
-				selectedLi.parent("ul").find(".select-title p").text(selectedLi.text());
+				selectedLi.parents("ul").find(".select-title p").text(selectedLi.text());
 				//将下拉框选中
 			}
 		}

@@ -4,12 +4,12 @@
     <title>标签管理页面</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <h1>跟随下拉框变化</h1>
+    <h1>管理关键字</h1>
 
     功能：<asp:DropDownList ID="dplManageLabel" runat="server" AutoPostBack="true" OnSelectedIndexChanged="dplManageLabel_SelectedIndexChanged">
         <asp:ListItem>关键字管理</asp:ListItem>
-        <asp:ListItem>一级分类管理</asp:ListItem>
-        <asp:ListItem>二级分类管理</asp:ListItem>
+        <%--<asp:ListItem>一级分类管理</asp:ListItem>--%>
+        <%--<asp:ListItem>二级分类管理</asp:ListItem>--%>
     </asp:DropDownList>
 
     <asp:Panel ID="panel_keywords" runat="server" Visible="true">

@@ -57,7 +57,7 @@ function getGeneral(a,b,c,firstSearch)
 {
 	$.ajax({ 
 	    type: "POST",    
-	    url: "../Ajax/querySingle.ashx",
+	    url: "/Ajax/querySingle.ashx",
 	    dataType: "JSON",
 	    async : false,
     	data:{searchKey:a,searchValue:b,currntPage:c},
@@ -70,7 +70,7 @@ function getAdvanced(a,b,c,firstSearch)
 {
 	$.ajax({ 
 	    type: "POST",    
-	    url: "../Ajax/queryMulti.ashx",
+	    url: "/Ajax/queryMulti.ashx",
 	    dataType: "JSON",
 	    async : false,
         data:{searchKey:a,time:b,currntPage:c},
@@ -80,10 +80,11 @@ function getAdvanced(a,b,c,firstSearch)
 	});
 }
 $(function(){
-	var searchkey="keyword";
-	var generalSearch=new Array("keyword","title","author");
+	var searchkey="title";
+	var generalSearch=new Array("title","keyword","author");
 	var timer;
 	var liHeight=32;
+	var liSize=8;
 	var ulObject=new Array();
 	initialPage();
 	//高级搜索页和搜索结果页创建下拉框选项
@@ -130,9 +131,11 @@ $(function(){
 		forChange=generalSearch[0];
 		generalSearch[0]=generalSearch[theIndex];
 		generalSearch[theIndex]=forChange;
+		//交换数组中2个key的位置
 		changeText=$(".search-ul li:eq(0) p").text();
 		$(".search-ul li:eq(0) p").text($(".search-ul li:eq("+theIndex+")").text());
 		$(".search-ul li:eq("+theIndex+")").text(changeText);
+		//交换下拉框列表里的文本
 		searchkey=generalSearch[0];
 	})
 	//点击搜索按钮时跳页并传送数据
@@ -149,8 +152,8 @@ $(function(){
 	$(".advanced-search-search ul").hover(function(){
 		var ulHeight;
 		//判断各个下拉框有多少li数量并计算ul长度
-		if($(this).parents("div").hasClass("select-time"))
-			ulHeight=160;
+		/*if($(this).parents("div").hasClass("select-time"))
+			ulHeight=5*liHeight;*/
 		if($(this)[0].liNumber)
 			ulHeight=$(this)[0].liNumber*liHeight;
 		else
@@ -162,7 +165,14 @@ $(function(){
 					break;
 				}
 		}
-		showOption($(this),"blue",ulHeight);
+		if(ulHeight>(liSize+1)*liHeight||$(this).parents("div").hasClass("select-time"))
+		{
+			ulHeight=(liSize+1)*liHeight;
+			showOption($(this),"blue",ulHeight,true);
+		}
+		else{
+			showOption($(this),"blue",ulHeight,false);
+		}
 	},function(){
 		if(!$(this).hasClass("oppo-style"))
 			hideOption($(this),"white",liHeight);
@@ -170,30 +180,51 @@ $(function(){
 			hideOption($(this),"blue",liHeight);
 	})
 	//选择一级菜单
-	$(".select-level1").delegate(".select-option","click",function(){  
+	$(".select-level1").delegate(".select-option","click",function(){
      	for(var i=0;i<selectUls.length;i++)
 		{
 			if(selectUls[i].name==$(this).parents("ul").attr("id"))
 			{
+				if($(this).hasClass("select-all"))
+				{
+					$(this).parents("ul").find(".select-title p").text(selectUls[i].firstT);
+					selectUls[i].setSelected(0);
+					return;
+				}
 				selectUls[i].setSelected($(this).attr("id"));
 			}
 		}
-		$(this).parent("ul").find(".select-title p").text($(this).text());
+		$(this).parents("ul").find(".select-title p").text($(this).text());
 	});  
 	//选择二级菜单的一级标题
 	$(".select-level2 .first-title .select-option").click(function(){
+		if($(this).hasClass("select-all"))
+		{
+			if($(this).parents("ul").attr("id")=="documentType")
+			{
+				$(this).parents("ul").find(".select-title p").text("文献类型");
+				selectUls[0].setSelected(0);
+			}else{
+				$(this).parents("ul").find(".select-title p").text("非市场价值类型");
+				selectUls[1].setSelected(0);
+			}
+			$(this).parents(".select-level2").find(".second-title").css({"display":"none"});
+			return;
+		}
 		var optionIndex=$(this).parents(".select-level2").find(".first-title .select-option").index(this);
-		$(this).parent("ul").find(".select-title p").text($(this).text());
+		$(this).parents("ul").find(".select-title p").text($(this).text());
 		$(this).parents(".select-level2").find(".second-title").css({"display":"none"});
-		var secondUl=$(this).parents(".select-level2").find(".second-title:eq("+optionIndex+")");
+		var secondUl=$(this).parents(".select-level2").find(".second-title:eq("+(optionIndex-1)+")");
 		secondUl.css({"display":"block"});
-		if($(this).parent(".first-title").attr("id")=="documentType")
-			selectUls[0].setSelected(secondUl.find(".select-title").attr("id"));	
-		else
-			selectUls[1].setSelected(secondUl.find(".select-title").attr("id"));	
+		// if($(this).parent(".first-title").attr("id")=="documentType")
+		// 	selectUls[0].setSelected(secondUl.find(".select-title").attr("id"));	
+		// else
+		// 	selectUls[1].setSelected(secondUl.find(".select-title").attr("id"));	
 	})
 	//选择二级菜单的二级标题
 	$(".select-level2 .second-title .select-option").click(function(){
+		if($(this).hasClass("select-all"))
+			return;
 		for(var i=0;i<selectUls.length;i++)
 		{
 			if(selectUls[i].name==$(this).parents(".select-level2").find(".first-title").attr("id"))
@@ -202,11 +233,11 @@ $(function(){
 		var changeLi;
 		var changeId;
 		changeLi=$(this).text();
-		$(this).text($(this).parent("ul").find(".select-title p").text());
-		$(this).parent("ul").find(".select-title p").text(changeLi);
+		$(this).text($(this).parents(".second-title").find(".select-title p").text());
+		$(this).parents(".second-title").find(".select-title p").text(changeLi);
 		changeId=$(this).attr("id");
-		$(this).attr("id",$(this).parent("ul").find(".select-title").attr("id"));
-		$(this).parent("ul").find(".select-title").attr("id",changeId);
+		$(this).attr("id",$(this).parents(".second-title").find(".select-title").attr("id"));
+		$(this).parents(".second-title").find(".select-title").attr("id",changeId);
 	})
 	//选择年份
 	$(".select-time .select-option").click(function(){
@@ -228,7 +259,7 @@ $(function(){
 	})
 	//跳回一般搜素
 	$(".advanced-search-search .search-button").click(function(){
-		window.location.href="general-search.html";
+		window.location.href="index.html";
 	})
 	//高级搜索传送数据
 	function postMultiData(advancedKey,time){
@@ -269,7 +300,7 @@ $(function(){
 		advancedKey=advancedKey.substring(0,advancedKey.length-1);
 		return advancedKey;
 	}
-	function showOption(obj,changeTo,ulHeight)
+	function showOption(obj,changeTo,ulHeight,pleaseScroll)
 	{
 		obj.addClass("search-ul-hover");
 		if(changeTo=="white")
@@ -286,7 +317,7 @@ $(function(){
 		function scroll()
 		{
 			//时间下拉框加载完后显示滚动条
-			if(obj.parents("div").hasClass("select-time")){
+			if(pleaseScroll){
 				//obj.css({"overflowY":"scroll"});
 				obj.find(".options").mCustomScrollbar({
 	    			theme:"light",
@@ -355,12 +386,12 @@ $(function(){
 		for(var i=0;i<2;i++)
 		{
 			var timeUl=$(".select-time ul:eq("+i+")");
-			var optionContainer=$("<div>").addClass("options").height(128).appendTo(timeUl);
-			for(var j=0;j<nowYear-2000+1;j++)
-			{
-				$("<li>").text(j+2000).addClass("select-option").appendTo(optionContainer);
-			}
+			var optionContainer=$("<div>").addClass("options").height(liSize*liHeight).appendTo(timeUl);
 		}
+		for(var j=0;j<nowYear-2000+1;j++)
+			$("<li>").text(j+2000).addClass("select-option").appendTo(".select-time .options:eq(0)");
+		for(var j=nowYear-2000;j>=0;j--)
+			$("<li>").text(j+2000).addClass("select-option").appendTo(".select-time .options:eq(1)");
 		
 	}
 	function getOptionData()
@@ -368,7 +399,7 @@ $(function(){
 		var json=[];
 		$.ajax({ 
 	        type: "GET",    
-	        url: "../Ajax/getOptions.ashx",
+	        url: "/Ajax/getOptions.ashx",
 	        dataType: "JSON",
 	        async : false,
 	        success: function(data) {
@@ -413,32 +444,45 @@ $(function(){
 			}
 		}
 		everySelect.prototype.createOption=function(){
-			ulObject.push({"id":this.name,"liNumber":this.secondT.length+1});
+			ulObject.push({"id":this.name,"liNumber":this.secondT.length+2});
+			//+2 一为选择标题，二为全部选项
+			//如果不是是2级菜单
 			if(!this.twolevels)
 			{
+				var optionContainer=$("<div>").addClass("options").appendTo(this.obj);
+				//secondType的数量加上“全部”选项大于限制的li长度
+				if(this.secondT.length+1>liSize)
+					optionContainer.height(liSize*liHeight);
+				$("<li>").addClass("select-all select-option").text("全部").appendTo(optionContainer);
+				//下拉框内容为全部
 				for(var i=0;i<this.secondT.length;i++)
 				{
-					$("<li>").attr("id",this.secondT[i].id).addClass("select-option").text(this.secondT[i].name).appendTo(this.obj);			
+					$("<li>").attr("id",this.secondT[i].id).addClass("select-option").text(this.secondT[i].name).appendTo(optionContainer);			
 				}
 			}else{
+				$("<li>").addClass("select-all select-option").text("全部").appendTo(this.obj);
 				for(var i=0;i<this.secondT.length;i++)
 				{
 					$("<li>").text(this.secondT[i].firstType).addClass("select-option").appendTo(this.obj);
 					var ulObj=$("<ul>").addClass("second-title").appendTo(this.obj.parent(".select-level2"));
-					ulObj[0].liNumber=this.secondT[i].secondType.length;
-					for(j=0;j<this.secondT[i].secondType.length;j++)
-					{
-						var liObj=this.secondT[i].secondType[j];
-						var option=$("<li>").attr("id",liObj.id).appendTo(ulObj);
-						if(j!=0){
-							option.text(liObj.name).addClass("select-option");
-						}else{
-							option.addClass("select-title");
-							var div=$("<div>").addClass("clearfix").appendTo(option);
-							var p=$("<p>").text(liObj.name).appendTo(div);
+					//给一级菜单的父元素添加二级菜单
+					ulObj[0].liNumber=this.secondT[i].secondType.length+1;
+					var all=$("<li>").attr("id","").addClass("select-all select-title").appendTo(ulObj);
+						var div=$("<div>").addClass("clearfix").appendTo(all);
+							var p=$("<p>").text("全部").appendTo(div);
 							var img=$("<img>").attr("src","images/select-white.png").appendTo(div);
+						//创建二级菜单的标题
+					var optionContainer=$("<div>").addClass("options").appendTo(ulObj);
+					if(this.secondT[i].secondType.length>liSize)
+						optionContainer.height(liSize*liHeight);
+					//optionContainer用来存放secondType的选项
+						for(j=0;j<this.secondT[i].secondType.length;j++)
+						{
+							var liObj=this.secondT[i].secondType[j];
+							var option=$("<li>").attr("id",liObj.id).appendTo(optionContainer);
+							option.text(liObj.name).addClass("select-option");
 						}
-					}
+						//创建二级菜单的其它选项
 				}
 			}
 		}

@@ -71,27 +71,28 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
 	cursor:pointer;
 	position:relative;
 }
-.select-keyword{
+.select-article{
 	text-align:center;
 }
-.select-keyword div{
+.select-article div{
 	margin:0 auto;
 	height:100%;
 	line-height:56px;
 }
-.select-keyword div img{
+.select-article div img{
 	display:inline-block;
 	margin-bottom:2px;
 	height:10px;
 	width:auto;
 }
-.select-keyword div p{
+.select-article div p{
 	display:inline-block;
 	font-size:20px;
+	letter-spacing:1px;
 	margin-right:5px;
 	color:rgb(65,90,144);
 }
-.select-article,.select-writer{
+.select-keyword,.select-writer{
 	width:100%;
 	height:30px;
 	line-height:30px;
@@ -99,7 +100,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
 	color:white;
 	text-align:center;
 }
-.select-article{
+.select-keyword{
 	margin-top:25px;
 }
 .select-writer{
@@ -114,7 +115,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
 }
 
 
-.search-ul-hover .select-keyword div p{
+.search-ul-hover .select-article div p{
 	font-size:18px;
 	color:white;
 }
@@ -344,8 +345,8 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
 /* 以下是hover时出现的列表 */
 .advanced-search-search .select-option{
 	width:100%;
-	height:30px;
-	line-height:30px;
+	height:32px;
+	line-height:32px;
 	text-align:center;
 }
 .select-option:hover{

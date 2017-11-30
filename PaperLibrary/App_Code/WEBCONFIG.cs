@@ -30,8 +30,10 @@ public class WEBCONFIG
     /// <summary>
     /// 管理员账号密码
     /// </summary>
-    public static string ADMIN_USERNAME = "MarketAdmin";
-    public static string ADMIN_PASSWORD = "MarketManager";
+    //public static string ADMIN_USERNAME = "MarketAdmin";
+    //public static string ADMIN_PASSWORD = "MarketManager";
+    public static string ADMIN_USERNAME = "1";
+    public static string ADMIN_PASSWORD = "1";
 
 
     /// <summary>
