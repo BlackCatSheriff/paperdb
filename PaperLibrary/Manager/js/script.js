@@ -15,6 +15,6 @@ function addKeyWord() {
     var keyId = selectedKeyword.attr('id');
     var keyName = selectedKeyword.val();
     pwd = $("<li><input type='checkbox' checked='checked' name='keywords' value='" + keyId + "'/>" + keyName + " </li>");     // 创建的input对象
-    $("ul li:last").append(pwd);
+    $(".addKeyword").append(pwd);
 }
 

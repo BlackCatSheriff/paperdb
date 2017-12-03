@@ -106,7 +106,26 @@ $(function(){
 	$(window).resize(function(){
 		initialPage();
 	})
-
+	//一般搜索页和高级搜索页的跳页和传送数据
+	function jumpAndPost(page)
+	{
+		if(page=="general")
+		{
+			var searchContent=$(".general-search-search input").val();
+			if(!searchContent) return;
+			var url="search-result.html?searchKey="+escape(searchkey);
+			url+="&searchValue="+escape(searchContent);
+			url+="&currntPage="+escape("0");
+			window.location.href=url;
+		}
+		else if(page=="advanced")
+		{
+			var advancedKey=getAdvancedKey();
+			var time=getTime();
+			if(advancedKey)
+				postMultiData(advancedKey,time);
+		}
+	}
 	//以下为普通搜素页的事件
 	$(".general-search-search ul").hover(function(){
 		$(this).addClass("search-ul-hover");
@@ -140,12 +159,13 @@ $(function(){
 	})
 	//点击搜索按钮时跳页并传送数据
 	$(".general-search-search>img").click(function(){
-		var searchContent=$(".general-search-search input").val();
-		if(!searchContent) return;
-		var url="search-result.html?searchKey="+escape(searchkey);
-		url+="&searchValue="+escape(searchContent);
-		url+="&currntPage="+escape("0");
-		window.location.href=url;
+		jumpAndPost("general");
+	})
+	//一般搜索页按enter键跳页并传送数据
+	$(".general-search-container").keydown(function(event){
+		var keycode = (event.keyCode ? event.keyCode : event.which);  
+		if(keycode=="13")
+			jumpAndPost("general");
 	})
 
 	//以下为高级搜索页的事件
@@ -245,10 +265,13 @@ $(function(){
 	})
 	//高级搜索页点击高级搜索时跳页并传送数据
 	$(".search-choice button").click(function(){
-		var advancedKey=getAdvancedKey();
-		var time=getTime();
-		if(advancedKey)
-			postMultiData(advancedKey,time);
+		jumpAndPost("advanced");
+	})
+	//高级搜索页按enter跳页并传送数据
+	$(".advanced-search-container").keydown(function(event){
+		var keycode = (event.keyCode ? event.keyCode : event.which);  
+		if(keycode=="13")
+			jumpAndPost("advanced");
 	})
 	//搜索结果页点击搜索效果
 	$(".advanced-search-search .advanced-button").click(function(){
@@ -259,7 +282,7 @@ $(function(){
 	})
 	//跳回一般搜素
 	$(".advanced-search-search .search-button").click(function(){
-		window.location.href="index.html";
+		window.location.href="/";
 	})
 	//高级搜索传送数据
 	function postMultiData(advancedKey,time){

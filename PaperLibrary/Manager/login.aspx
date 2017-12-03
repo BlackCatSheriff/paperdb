@@ -36,7 +36,7 @@
 			<div class="choice clearfix">
 				<%--<button class="log-in">登录</button>--%>
                 <asp:Button ID="btnSubmit" runat ="server" Text="登录" CssClass="log-in" OnClick="btnSubmit_Click" />
-				<button class="jump-search">进入首页</button>
+				<a class="jump-search" href="/">进入首页</a>
 			</div>
 			</div>
             </form>
