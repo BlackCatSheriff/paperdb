@@ -155,7 +155,7 @@ public class ArticleHelper
         {
             using (var db = new PaperDbEntities())
             {
-                keywordList = (from it in db.KeyWords select it).ToList();
+                keywordList = (from it in db.KeyWords orderby it.Name ascending select it ).ToList();
             }
             return keywordList;
         }

@@ -135,7 +135,7 @@ public partial class Manager_addArticle : System.Web.UI.Page
                     if (updateArticle(articleId))
                         Response.Write(JSHelper.alert("文章更新成功!","articleList.aspx"));
                     else
-                        Response.Write(JSHelper.alert("文章更新失败!请重试!"));
+                        Response.Write(JSHelper.alert("文章更新失败!请检查各项正确性后重试!"));
                 }
                 else
                 {
@@ -143,7 +143,7 @@ public partial class Manager_addArticle : System.Web.UI.Page
                     if (addNewArticle())
                         Response.Write(JSHelper.alert("文章添加成功!", "articleList.aspx"));
                     else
-                        Response.Write(JSHelper.alert("文章添加失败!请重试!"));
+                        Response.Write(JSHelper.alert("文章添加失败!请检查各项正确性后重试!"));
 
                 }
 

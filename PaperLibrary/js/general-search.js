@@ -21,9 +21,12 @@ function appendArticle(data,nowPage,firstSearch)
 			$(".change-article-page button").css({"display":"block"});
 			buttonNumber=2;
 		}
-		for(var i=1;i<Math.ceil(data.totalCnt/pageSize);i++)
+		for(var i=0;i<Math.ceil(data.totalCnt/pageSize);i++)
 		{
-			$("<p>").text(i+1).appendTo($(".page-number-in"));
+			if(i==0)
+				$("<p>").text(i+1).addClass("now-page-number").appendTo($(".page-number-in"));
+			else
+				$("<p>").text(i+1).appendTo($(".page-number-in"));
 		}
 		$(".page-number").width(i*40);
 		$(".change-article-page").width(81*buttonNumber+i*40);
@@ -40,7 +43,7 @@ function appendArticle(data,nowPage,firstSearch)
 	{
 		var lineIndex=Math.floor(i/2);
 		var everyArticle=$("<div>").addClass("every-article").appendTo($(".every-line-in:eq("+lineIndex+")"));
-			var h1=$("<h1>").text(data.info[i].title).appendTo(everyArticle);
+			var h1=$("<h1>").text(data.info[i].title).attr("title",data.info[i].title).appendTo(everyArticle);
 			var author=$("<div>").addClass("article-author").addClass("clearfix").appendTo(everyArticle);
 				var authorLabel=$("<h2>").text("作者").appendTo(author);
 				var authorauthor=$("<p>").text(data.info[i].author).appendTo(author);
@@ -62,7 +65,8 @@ function getGeneral(a,b,c,firstSearch)
 	    async : false,
     	data:{searchKey:a,searchValue:b,currntPage:c},
 	    success: function(data) {
-            appendArticle(data,c,firstSearch);
+           appendArticle(data,c,firstSearch);
+           changeFooter();
 	    }
 	});
 }
@@ -76,8 +80,19 @@ function getAdvanced(a,b,c,firstSearch)
         data:{searchKey:a,time:b,currntPage:c},
 	    success: function(data) {
             appendArticle(data,c,firstSearch);
-	    }
+            changeFooter();
+		}
 	});
+}
+function changeFooter(){
+	if($(".search-result-container").height()>$(window).height())
+		$(".search-result-container .footer").css({
+			"position":"static"
+		});
+	else
+		$(".search-result-container .footer").css({
+			"position":"absolute"
+		});
 }
 $(function(){
 	var searchkey="title";
@@ -218,22 +233,24 @@ $(function(){
 	});  
 	//选择二级菜单的一级标题
 	$(".select-level2 .first-title .select-option").click(function(){
-		if($(this).hasClass("select-all"))
+		$(this).parents(".select-level2").find(".second-title").css({"display":"none"});
+		if($(this).parents("ul").attr("id")=="documentType")
 		{
-			if($(this).parents("ul").attr("id")=="documentType")
+			selectUls[0].setSelected(0);
+			if($(this).hasClass("select-all"))
 			{
-				$(this).parents("ul").find(".select-title p").text("文献类型");
-				selectUls[0].setSelected(0);
-			}else{
-				$(this).parents("ul").find(".select-title p").text("非市场价值类型");
-				selectUls[1].setSelected(0);
+				$(this).parents("ul").find(".select-title p").text("文献类型");				
+				return;
 			}
-			$(this).parents(".select-level2").find(".second-title").css({"display":"none"});
-			return;
+		}else{
+			selectUls[1].setSelected(0);
+			if($(this).hasClass("select-all")){
+				$(this).parents("ul").find(".select-title p").text("非市场价值类型");
+				return;
+			}
 		}
 		var optionIndex=$(this).parents(".select-level2").find(".first-title .select-option").index(this);
 		$(this).parents("ul").find(".select-title p").text($(this).text());
-		$(this).parents(".select-level2").find(".second-title").css({"display":"none"});
 		var secondUl=$(this).parents(".select-level2").find(".second-title:eq("+(optionIndex-1)+")");
 		secondUl.css({"display":"block"});
 		// if($(this).parent(".first-title").attr("id")=="documentType")
@@ -282,6 +299,9 @@ $(function(){
 	})
 	//跳回一般搜素
 	$(".advanced-search-search .search-button").click(function(){
+		window.location.href="/";
+	})
+	$(".title-chinese").click(function(){
 		window.location.href="/";
 	})
 	//高级搜索传送数据

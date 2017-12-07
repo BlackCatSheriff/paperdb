@@ -126,16 +126,16 @@ public class LabelHelper
                 {
 
                     case "keyword":
-                        List<KeyWords> keywordList = (from it in db.KeyWords select it).ToList();
+                        List<KeyWords> keywordList = (from it in db.KeyWords orderby it.Name ascending select it).ToList();
                         rpt.DataSource = keywordList;
                         break;
                     case "firstLevel":
-                        List<Category> categoryList = (from it in db.Category select it).ToList();
+                        List<Category> categoryList = (from it in db.Category orderby it.Name ascending select it).ToList();
                         rpt.DataSource = categoryList;
                         break;
                     case "secondLevel":
                         Category cid = db.Category.Single(a => a.Name == ca);
-                        List<Option> optionList = (from it in db.Option where it.CategoryId==cid.id select it).ToList();
+                        List<Option> optionList = (from it in db.Option where it.CategoryId==cid.id orderby it.Name ascending select it).ToList();
                         rpt.DataSource = optionList;
                         break;
                 }

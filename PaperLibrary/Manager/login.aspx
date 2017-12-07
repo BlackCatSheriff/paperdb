@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>login-backstage</title>
+	<title>后台管理</title>
 	<link rel="stylesheet" href="css/login-backstage.css">
 	<script src="../js/jquery-3.1.1.min.js"></script>
 </head>

@@ -12,8 +12,8 @@
    
     <h1>添加文章</h1>
      
-    标题：<asp:TextBox ID="txtTitle" runat ="server" MaxLength="60"></asp:TextBox><br />
-    作者：<asp:TextBox ID="txtAuthor" runat ="server" MaxLength="40"></asp:TextBox><br />
+    标题：<asp:TextBox ID="txtTitle" runat ="server" MaxLength="60" placeholder="请输入不超过60字内容"></asp:TextBox><br />
+    作者：<asp:TextBox ID="txtAuthor" runat ="server" MaxLength="40" placeholder="请输入不超过40字内容"></asp:TextBox><br />
     时间：<asp:DropDownList ID="dplTime" runat ="server" ></asp:DropDownList><br />
     摘要：<asp:TextBox ID ="txtSummary" runat ="server" TextMode="MultiLine"  Height="120px"></asp:TextBox><br />
     <div class="keywordContainer">关键字：<span style="color:red">必选项</span><ul class="addKeyword clearfix"></ul>

@@ -40,6 +40,7 @@
                     <li><a href="manageLabel.aspx">管理关键词</a></li>
                     <li><a href="articleList.aspx">管理文章</a></li>
                     <%--<li><a href="manageLabel.aspx">管理标签</a></li>--%>
+                    <li><a href="handbook.aspx">使用说明</a></li>
 
                     
                     <li><asp:LinkButton ID="logout" runat ="server" Text="退出登录" OnClick="logout_Click"></asp:LinkButton></li>
