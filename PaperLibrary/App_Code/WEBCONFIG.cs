@@ -24,16 +24,16 @@ public class WEBCONFIG
     /// <summary>
     /// 文章结果集每页显示数量
     /// </summary>
-    public static int ARTICLE_EVERYPAGE_COUNT = 3;
+    public static int ARTICLE_EVERYPAGE_COUNT = 12;
 
 
     /// <summary>
     /// 管理员账号密码
     /// </summary>
-    //public static string ADMIN_USERNAME = "MarketAdmin";
-    //public static string ADMIN_PASSWORD = "MarketManager";
-    public static string ADMIN_USERNAME = "1";
-    public static string ADMIN_PASSWORD = "1";
+    public static string ADMIN_USERNAME = "MarketAdmin";
+    public static string ADMIN_PASSWORD = "MarketManager";
+    //public static string ADMIN_USERNAME = "1";
+    //public static string ADMIN_PASSWORD = "1";
 
 
     /// <summary>

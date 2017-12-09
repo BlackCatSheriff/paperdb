@@ -24,6 +24,7 @@ public partial class Article
     public System.DateTime UpateTime { get; set; }
     public string Summary { get; set; }
     public string Link { get; set; }
+    public string Journal { get; set; }
 
     public virtual ICollection<KeyWordConnection> KeyWordConnection { get; set; }
     public virtual ICollection<TypeConnection> TypeConnection { get; set; }
@@ -78,15 +79,6 @@ public partial class Option
 
     public virtual Category Category { get; set; }
     public virtual ICollection<TypeConnection> TypeConnection { get; set; }
-}
-
-public partial class sysdiagrams
-{
-    public string name { get; set; }
-    public int principal_id { get; set; }
-    public int diagram_id { get; set; }
-    public Nullable<int> version { get; set; }
-    public byte[] definition { get; set; }
 }
 
 public partial class TypeConnection

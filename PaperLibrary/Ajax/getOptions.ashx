@@ -11,7 +11,7 @@ public class getOptions : IHttpHandler
     public void ProcessRequest(HttpContext context)
     {
         List<DataPackage> ans = new List<DataPackage>();
-        string[] firstLevel = { "地区", "生态系统类型", "文献综述", "一级评估", "二级评估", "生态系统服务类型", "模型", "使用价值", "非使用价值" };
+        string[] firstLevel = { "地区", "生态系统类型", "文献综述", "一级评估", "二级评估", "生态系统服务类型", "方法", "非市场价值类型" };
         try
         {
             foreach(string s in firstLevel)

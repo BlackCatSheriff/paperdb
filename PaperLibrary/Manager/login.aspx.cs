@@ -9,7 +9,8 @@ public partial class Manager_login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (Convert.ToBoolean(Session["user"]))
+            Response.Redirect("articleList.aspx");
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
@@ -27,8 +28,9 @@ public partial class Manager_login : System.Web.UI.Page
             Response.Write(JSHelper.alert("用户名或密码错误!"));
         else
         {
-            Response.Write(JSHelper.alert("登录成功!", "articleList.aspx"));
+            //Response.Write(JSHelper.alert("登录成功!", "articleList.aspx"));
             Session["user"] = true;
+            Response.Redirect("articleList.aspx");
         }
     }
 }

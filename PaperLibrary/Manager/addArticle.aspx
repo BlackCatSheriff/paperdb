@@ -26,7 +26,9 @@
         </select>
         <input type="button"  value="添加关键字" onclick="addKeyWord()"/>
     </div>
-    链接：<asp:TextBox ID="txtLink" runat ="server" placeholder="请给出完整链接（E.G. http(s)://xxx）"></asp:TextBox><br />
+    链接：<asp:TextBox ID="txtLink" runat ="server" placeholder="请给出完整链接（E.G. http(s)://xxx）"  MaxLength="2048"></asp:TextBox><br />
+    期刊：<asp:TextBox ID="txtJournal" runat ="server" placeholder="请填写文章期刊" MaxLength="2048"></asp:TextBox><br />
+
     <div>
         地区：<asp:DropDownList ID="dplDQ" runat ="server" ></asp:DropDownList><br />
         生态系统类型：<asp:DropDownList ID="dplSTXTLX" runat ="server" ></asp:DropDownList><br />
@@ -37,11 +39,10 @@
             一级评估：<asp:DropDownList ID="dplEJPG" runat ="server" ></asp:DropDownList><br />
         </p>
         生态系统服务类型：<asp:DropDownList ID="dplSTXTFWLX" runat ="server" ></asp:DropDownList><br />
-        模型：<asp:DropDownList ID="dplMX" runat ="server" ></asp:DropDownList><br />
+        方法：<asp:DropDownList ID="dplMX" runat ="server" ></asp:DropDownList><br />
         <p>
-            <p class="firstType"> 非市场价值类型：</p>
-            使用价值：<asp:DropDownList ID="dplSYJZ" runat ="server" ></asp:DropDownList><br />
-            非使用价值：<asp:DropDownList ID="dplFSYJZ" runat ="server" ></asp:DropDownList><br />
+            非市场价值类型：
+            <asp:DropDownList ID="dplFSCJZLX" runat ="server" ></asp:DropDownList><br />
         </p>
         <asp:Button ID="btnSubmit" runat ="server" Text="提交"  OnClick="btnSubmit_Click"/>
     </div>

@@ -51,12 +51,9 @@ public partial class Manager_addArticle : System.Web.UI.Page
         optionsDict.Add(dplYJPG, "一级评估");
         optionsDict.Add(dplEJPG, "二级评估");
         optionsDict.Add(dplSTXTFWLX, "生态系统服务类型");
-        optionsDict.Add(dplMX, "模型");
-        optionsDict.Add(dplSYJZ, "使用价值");
-        optionsDict.Add(dplFSYJZ, "非使用价值");
+        optionsDict.Add(dplMX, "方法");
+        optionsDict.Add(dplFSCJZLX, "非市场价值类型");
     }
-
-
 
 
     /// <summary>
@@ -118,6 +115,8 @@ public partial class Manager_addArticle : System.Web.UI.Page
             Response.Write(JSHelper.alert("请输入文章摘要"));
         else if (txtLink.Text.Trim().Equals(string.Empty))
             Response.Write(JSHelper.alert("请输入文章链接"));
+        else if(txtJournal.Text.Trim().Equals(string.Empty))
+            Response.Write(JSHelper.alert("请输入文章所属期刊"));
         else
         {
             //检测LINK正确性
@@ -165,6 +164,7 @@ public partial class Manager_addArticle : System.Web.UI.Page
         ar.UpateTime = new DateTime(year, 1, 1);
         ar.Summary = txtSummary.Text.Trim();
         ar.Link = txtLink.Text.Trim();
+        ar.Journal = txtJournal.Text.Trim();
         int articleId = -1;
         try
         {
@@ -228,7 +228,7 @@ public partial class Manager_addArticle : System.Web.UI.Page
         ar.UpateTime = new DateTime(year, 1, 1);
         ar.Summary = txtSummary.Text.Trim();
         ar.Link = txtLink.Text.Trim();
-
+        ar.Journal = txtJournal.Text.Trim();
 
         if (ArticleHelper.updateArticle(ar))
         {
@@ -313,6 +313,7 @@ public partial class Manager_addArticle : System.Web.UI.Page
         txtAuthor.Text = ar.Author;
         txtSummary.Text = ar.Summary;
         txtLink.Text = ar.Link;
+        txtJournal.Text = ar.Journal;
         dplTime.SelectedValue = ar.UpateTime.Year.ToString();
         //绑定各种选项
         changeOptions(articleId);

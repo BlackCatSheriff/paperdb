@@ -8,8 +8,8 @@
 
     功能：<asp:DropDownList ID="dplManageLabel" runat="server" AutoPostBack="true" OnSelectedIndexChanged="dplManageLabel_SelectedIndexChanged">
         <asp:ListItem>关键字管理</asp:ListItem>
-        <%--<asp:ListItem>一级分类管理</asp:ListItem>--%>
-        <%--<asp:ListItem>二级分类管理</asp:ListItem>--%>
+        <asp:ListItem>一级分类管理</asp:ListItem>
+        <asp:ListItem>二级分类管理</asp:ListItem>
     </asp:DropDownList>
 
     <asp:Panel ID="panel_keywords" runat="server" Visible="true">

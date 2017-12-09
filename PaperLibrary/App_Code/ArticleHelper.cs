@@ -504,6 +504,51 @@ public class ArticleHelper
 
 
 
+    /// <summary>
+    /// 混合条件查询中，从但条件查询中过滤出符合各种选项的文章
+    /// </summary>
+    /// <param name="ll"></param>
+    /// <param name="opIds"></param>
+    /// <returns></returns>
+    public static List<Article> filterArticleByOptions(ref List<Article> ll, ref List<int> opIds)
+    {
+        try
+        {
+            using (var db = new PaperDbEntities())
+            {
+
+                List<int> arids = new List<int>();
+                arids.Clear();
+                foreach (Article ar in ll)
+                    arids.Add(ar.id);
+                //获取待过滤文章的所有 TypeConnection
+                List<TypeConnection> tyls = db.TypeConnection.Where(a => arids.Contains(a.ArticleId)).ToList();
+                List < Article > arls = new List<Article>();
+
+                int opid0 = opIds[0];
+                int opidNow = 0;
+                HashSet<int> setId = new HashSet<int>(tyls.Where(a => a.OptionId == opid0).Select(a => a.ArticleId));// new HashSet<int>();
+                HashSet<int> setTmp = null;
+                for (int i = 1; i < opIds.Count; i++)
+                {
+                    //linq 不可以直接使用数组下标访问，需要用变量存一下
+                    opidNow = opIds[i];
+                    setTmp = new HashSet<int>(tyls.Where(a => a.OptionId == opidNow).Select(a => a.ArticleId));
+                    setId.IntersectWith(setTmp);
+                }
+
+                arls = ll.Where(a => setId.Contains(a.id)).ToList();
+                return arls ;
+            }
+        }
+
+
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 
     /// <summary>
     /// 通过高级选项返回文章
@@ -594,6 +639,8 @@ public class ArticleHelper
         public string keyword { get; set; }
         public string summary { get; set; }
         public string link { get; set; }
+        public string time { get; set; }
+        public string journal { get; set; }
 
     }
 
@@ -607,7 +654,12 @@ public class ArticleHelper
         public List<Passage> info { get; set; }
     }
 
-
+    /// <summary>
+    /// 这里可能严重影响性能，由于是查出所有的数据然后再提取多少条
+    /// </summary>
+    /// <param name="arls"></param>
+    /// <param name="currentPage"></param>
+    /// <returns></returns>
     public static DataPackage generateDataPackage(ref List<Article> arls, int currentPage)
     {
         DataPackage dp = new DataPackage();
@@ -621,6 +673,8 @@ public class ArticleHelper
             ps.author = ar.Author;
             ps.summary = ar.Summary;
             ps.link = ar.Link;
+            ps.time = ar.UpateTime.Date.Year.ToString();
+            ps.journal = ar.Journal;
             string keyword = string.Empty;//;连接
             foreach (KeyValuePair<int, string> kp in ArticleHelper.getKeyowrd(ar.id))
             {
@@ -634,6 +688,4 @@ public class ArticleHelper
         dp.info = psLs;
         return dp;
     }
-
-
 }

@@ -1,6 +1,6 @@
 var selectUls=new Array();
 var pageArray=new Array();//每页实际文章数
-var pageSize=3;//每页可放的最多文章数
+var pageSize=12;//每页可放的最多文章数
 function appendArticle(data,nowPage,firstSearch)
 {
 	$(".advanced-search .search-number p").text("共搜索到"+data.totalCnt+"条结果");
@@ -35,7 +35,9 @@ function appendArticle(data,nowPage,firstSearch)
 		//创建每一行container并改变颜色
 		var everyLine=$("<div>").addClass("every-line").appendTo($(".search-result"));
 		if(i%2)
+		{
 			everyLine.css({"background":"rgb(248,248,248)"});
+		}
 		var everyLineIn=$("<div>").addClass("every-line-in").addClass("clearfix").appendTo(everyLine);
 	}
 	//创建每一页的文章并添加
@@ -54,6 +56,7 @@ function appendArticle(data,nowPage,firstSearch)
 				var summaryLabel=$("<h2>").text("摘要").appendTo(summary);
 				var summarysummary=$("<p>").text(data.info[i].summary).appendTo(summary);
 			var a=$("<a>").text("阅读全文").addClass("read-article").attr("href",data.info[i].link).appendTo(everyArticle);
+	    ifOverflow(summarysummary);
 	}
 }
 function getGeneral(a,b,c,firstSearch)
@@ -93,6 +96,20 @@ function changeFooter(){
 		$(".search-result-container .footer").css({
 			"position":"absolute"
 		});
+}
+function ifOverflow(summarysummary)
+{
+		var maxSummaryLength=280;
+		var startCheck=240;
+		var theSummary=summarysummary.text();
+		if(theSummary.length<=startCheck)
+			return;
+		var indexEnd=theSummary.indexOf('。',startCheck);
+		if(indexEnd==-1)
+			summarysummary.text(theSummary.substring(0,260)+"……");
+		else
+			summarysummary.text(theSummary.substring(0,indexEnd+1)+"……");
+		
 }
 $(function(){
 	var searchkey="title";
